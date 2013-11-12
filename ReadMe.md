@@ -8,4 +8,7 @@
 第一步，显示出网页
 ##[gowalker](http://gowalker.org/)是个好网站
 
+2013年11月12日
+gae不支持模板文件。今天查了半天，改了半天，还是不能成功，今天是个失败的版本
+
 [测试站](http://goguobug.appspot.com/)
