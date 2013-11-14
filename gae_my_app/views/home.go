@@ -13,9 +13,10 @@ const HomePage = `
         </div>	
         <div class="container">
             <div class="page-header">
-                <h1>{{.Title .}}</h1>
-                <h6 class="text-muted">文章发表于 </h6>
+                <h1>{{.Title}}</h1>
+                <h6 class="text-muted">文章发表于 {{.Created}}</h6>
                 <p>
+                	{{.Content}}
                 </p>
             </div>
         </div>

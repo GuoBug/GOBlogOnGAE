@@ -1,10 +1,12 @@
 package controller
 
 import (
+	"GOBlogOnGAE/gae_my_app/models"
 	"GOBlogOnGAE/gae_my_app/views"
 	"html/template"
 	"log"
 	"net/http"
+	"time"
 )
 
 func Home(w http.ResponseWriter, r *http.Request) {
@@ -16,11 +18,15 @@ func Home(w http.ResponseWriter, r *http.Request) {
 
 	/* 先赋值，后取值打印 */
 
-	Title := "Test title"
+	topics := models.Topic{
+		Title:   "Test title",
+		Content: "Test content",
+		Created: time.Now(),
+	}
 
 	log.Println("DEBUG")
 
-	err := templates.Execute(w, Title)
+	err := templates.ExecuteTemplate(w, "home", topics)
 	if err != nil {
 		log.Fatal(err)
 	}
