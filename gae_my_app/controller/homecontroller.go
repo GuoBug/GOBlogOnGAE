@@ -3,6 +3,7 @@ package controller
 import (
 	"GOBlogOnGAE/gae_my_app/models"
 	"GOBlogOnGAE/gae_my_app/views"
+
 	"html/template"
 	"log"
 	"net/http"
@@ -19,14 +20,20 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	/* 先赋值，后取值打印 */
 
 	topics := models.Topic{
-		Title:   "Test title",
-		Content: "Test content",
-		Created: time.Now(),
+		TopicNum: 0,
+		Title:    "Test title",
+		Content:  "Test content",
+		Created:  time.Now(),
 	}
 
 	log.Println("DEBUG")
+	models.SaveTopic(w, r, &topics)
 
-	err := templates.ExecuteTemplate(w, "home", topics)
+	topnew, err := models.GetTopic(w, r, 0)
+
+	log.Println(topnew)
+
+	err = templates.ExecuteTemplate(w, "home", topics)
 	if err != nil {
 		log.Fatal(err)
 	}
