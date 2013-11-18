@@ -30,6 +30,15 @@ func Home(w http.ResponseWriter, r *http.Request) {
 
 	models.SaveTopic(w, r, &topics[0])
 
+	topics[1] = models.Topic{
+		Id:      2,
+		Title:   "2222222222",
+		Content: "T2222",
+		Created: time.Now(),
+	}
+
+	models.SaveTopic(w, r, &topics[1])
+
 	topnew := models.GetAllTopic(w, r)
 
 	log.Println(topnew[0])

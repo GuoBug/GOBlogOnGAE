@@ -11,4 +11,5 @@ func init() {
 
 func router() {
 	http.HandleFunc("/", controller.Home)
+	http.HandleFunc("/topic", controller.TopicController)
 }

@@ -13,7 +13,6 @@ const HomePage = `
         </div>	
         <div class="container">
         	{{range . }}
-        	{{template "Topic" .}}
             <div class="page-header">
                 <h1>{{.Topic.Title}}</h1>
                 <h6 class="text-muted">文章发表于 {{.Topic.Created}}</h6>
@@ -29,4 +28,4 @@ const HomePage = `
     </body>
 </html>
 `
-const TopicTemplate = `{{define "Topic"}}Title:{{.topic.Title}},Created:{{.topic.Created}},Content:{{.topic.Created}}{{end}}`
+const TopicTemplate = `{{define "Topic"}}Id:{{.Topic.Id}},Uid:{{.Topic.Uid}},Title:{{.Topic.Title}},Content:{{.Topic.Content}},Attachment:{{.Topic.Attachment}},Created:{{.Topic.Created}},Updated:{{.Topic.Updated}},Views:{{.Topic.Views}},Author:{{.Topic.Author}},ReplyTime:{{.Topic.ReplyTime}},ReplyCount:{{.Topic.ReplyCount}},ReplyLastUId:{{.Topic.ReplyLastUId}}{{end}}`
