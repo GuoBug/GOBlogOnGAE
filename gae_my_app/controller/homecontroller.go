@@ -16,24 +16,33 @@ func Home(w http.ResponseWriter, r *http.Request) {
 
 	templates.New("header").Parse(views.HeadTemplateHtml)
 	templates.New("navbar").Parse(views.NavbarTemplateHtml)
+	templates.Parse(views.TopicTemplate)
 
 	/* 先赋值，后取值打印 */
+	var topics [2]models.Topic
 
-	topics := models.Topic{
-		TopicNum: 0,
-		Title:    "Test title",
-		Content:  "Test content",
-		Created:  time.Now(),
+	topics[0] = models.Topic{
+		Id:      0,
+		Title:   "Test title",
+		Content: "Test content",
+		Created: time.Now(),
 	}
 
-	log.Println("DEBUG")
-	models.SaveTopic(w, r, &topics)
+	models.SaveTopic(w, r, &topics[0])
 
-	topnew, err := models.GetTopic(w, r, 0)
+	topics[1] = models.Topic{
+		Id:      1,
+		Title:   "2",
+		Content: "Test content",
+		Created: time.Now(),
+	}
+	models.SaveTopic(w, r, &topics[1])
 
-	log.Println(topnew)
+	topnew := models.GetAllTopic(w, r)
 
-	err = templates.ExecuteTemplate(w, "home", topics)
+	log.Println(topnew[0])
+
+	err := templates.Execute(w, topnew)
 	if err != nil {
 		log.Fatal(err)
 	}
