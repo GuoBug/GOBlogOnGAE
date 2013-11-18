@@ -15,10 +15,10 @@ const HomePage = `
         	{{range . }}
         	{{template "Topic" .}}
             <div class="page-header">
-                <h1>{{.Title}}</h1>
-                <h6 class="text-muted">文章发表于 {{.Created}}</h6>
+                <h1>{{.Topic.Title}}</h1>
+                <h6 class="text-muted">文章发表于 {{.Topic.Created}}</h6>
                 <p>
-                	{{.Content}}
+                	{{.Topic.Content}}
                 </p>
             </div>
             {{end}}

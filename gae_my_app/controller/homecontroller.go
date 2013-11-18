@@ -22,21 +22,13 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	var topics [2]models.Topic
 
 	topics[0] = models.Topic{
-		Id:      0,
+		Id:      1,
 		Title:   "Test title",
 		Content: "Test content",
 		Created: time.Now(),
 	}
 
 	models.SaveTopic(w, r, &topics[0])
-
-	topics[1] = models.Topic{
-		Id:      1,
-		Title:   "2",
-		Content: "Test content",
-		Created: time.Now(),
-	}
-	models.SaveTopic(w, r, &topics[1])
 
 	topnew := models.GetAllTopic(w, r)
 

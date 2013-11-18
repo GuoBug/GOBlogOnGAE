@@ -69,12 +69,13 @@ func GetAllTopic(w http.ResponseWriter, r *http.Request) []template.FuncMap {
 	data := []template.FuncMap{}
 
 	log.Println("in all")
-	for i = 0; i < 100; i++ {
+	for i = 1; i < 100; i++ {
+		topic, err = GetTopic(w, r, i)
+
+		log.Println(err, topic)
 		if err != nil {
 			break
 		}
-		topic, err = GetTopic(w, r, i)
-
 		data = append(data, template.FuncMap{"Topic": topic})
 	}
 
