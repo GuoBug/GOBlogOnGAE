@@ -26,6 +26,9 @@ type Topic struct {
 }
 
 func SaveTopic(w http.ResponseWriter, r *http.Request, topic *Topic) {
+
+	log.Println("save topic")
+
 	c := appengine.NewContext(r)
 
 	log.Println(topic.Id)

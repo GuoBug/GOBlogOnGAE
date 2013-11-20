@@ -7,6 +7,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"time"
 )
 
 func TopicController(w http.ResponseWriter, r *http.Request) {
@@ -17,12 +18,30 @@ func TopicController(w http.ResponseWriter, r *http.Request) {
 	templates.New("navbar").Parse(views.NavbarTemplateHtml)
 	templates.Parse(views.TopicTemplate)
 
-	r.ParseForm()
-
-	log.Println(r.Form) //这些信息是输出到服务器端的打印信息
-
 	if r.Method == "POST" {
-		topic := models.Topic{}
+
+		r.ParseForm()
+
+		log.Println(r.Form) //这些信息是输出到服务器端的打印信息
+
+		log.Println(r.Form["title"])
+
+		topic := models.Topic{
+			Id:         3,
+			Uid:        0,
+			Title:      r.Form["title"][0],
+			Content:    r.Form["content"][0],
+			Attachment: "",
+			Created:    time.Now(),
+			Updated:    time.Now(),
+			Views:      0,
+			Author:     "Bug",
+			ReplyCount: 0,
+		}
+
+		log.Println(topic)
+
+		models.SaveTopic(w, r, &topic)
 	}
 
 	topnew := models.GetAllTopic(w, r)
