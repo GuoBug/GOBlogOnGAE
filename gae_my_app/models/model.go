@@ -14,6 +14,7 @@ type Topic struct {
 	Id           int64
 	Uid          int64
 	Title        string
+	Category     string
 	Content      string
 	Attachment   string
 	Created      time.Time
@@ -23,6 +24,13 @@ type Topic struct {
 	ReplyTime    time.Time
 	ReplyCount   int64
 	ReplyLastUId int64
+}
+
+type Category struct {
+	Id              int64
+	Title           string
+	TopicCount      int64
+	TopicLastUserId int64
 }
 
 func SaveTopic(w http.ResponseWriter, r *http.Request, topic *Topic) {
@@ -38,6 +46,25 @@ func SaveTopic(w http.ResponseWriter, r *http.Request, topic *Topic) {
 	log.Println(k)
 
 	_, err := datastore.Put(c, k, topic)
+
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+}
+
+func SaveCategroy(w http.ResponseWriter, r *http.Request) {
+
+	c := appengine.NewContext(r)
+
+	category := Category{
+		Id:    1,
+		Title: "test",
+	}
+
+	k := datastore.NewKey(c, "Category", "", category.Id, nil)
+
+	_, err := datastore.Put(c, k, &category)
 
 	if err != nil {
 		log.Fatal(err)
@@ -83,6 +110,32 @@ func GetAllTopic(w http.ResponseWriter, r *http.Request) []template.FuncMap {
 	}
 
 	return data
+}
+
+func GetAllCategory(w http.ResponseWriter, r *http.Request) []template.FuncMap {
+	var err error
+	var i int64
+	var category Category
+
+	c := appengine.NewContext(r)
+
+	data := []template.FuncMap{}
+
+	for i = 1; i < 100; i++ {
+
+		k := datastore.NewKey(c, "Category", "", i, nil)
+
+		err = datastore.Get(c, k, &category)
+
+		log.Println(err, category)
+		if err != nil {
+			break
+		}
+		data = append(data, template.FuncMap{"Category": category})
+	}
+
+	return data
+
 }
 
 /* 存数据库的原型函数

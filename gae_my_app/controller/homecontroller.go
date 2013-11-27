@@ -39,11 +39,13 @@ func Home(w http.ResponseWriter, r *http.Request) {
 
 	models.SaveTopic(w, r, &topics[1])
 
+	models.SaveCategroy(w, r)
+
 	topnew := models.GetAllTopic(w, r)
+	category := models.GetAllCategory(w, r)
 
-	log.Println(topnew[0])
-
-	err := templates.Execute(w, topnew)
+	err := templates.ExecuteTemplate(w, "home", category)
+	err = templates.ExecuteTemplate(w, "home", topnew)
 	if err != nil {
 		log.Fatal(err)
 	}

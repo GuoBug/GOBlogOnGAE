@@ -1,6 +1,6 @@
 package views
 
-TopicViewHTML=`
+const TopicViewHTML = `
 {{template "header"}}
         <title>{{.Topic.Title}}——Bug has no bug!</title>
     </head>

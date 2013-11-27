@@ -19,6 +19,10 @@ const TopicAddHTML = `
                    <input type="text" class="form-control" name="title">
                </div>
                <div>
+                 <label>分类</label>
+                 <input type="text" class="form-control" name="category">
+               </div>
+               <div>
                    <label>文章内容</label>
                    <textarea name="content" cols="30" rows="10" class="form-control"></textarea>
                </div>
