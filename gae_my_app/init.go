@@ -13,5 +13,6 @@ func router() {
 	http.HandleFunc("/", controller.Home)
 	http.HandleFunc("/topic", controller.TopicController)
 	http.HandleFunc("/topic/add", controller.TopicAddController)
+	http.HandleFunc("/categorySide", controller.CategorySideController)
 
 }

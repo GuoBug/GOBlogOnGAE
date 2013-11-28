@@ -16,7 +16,7 @@ func TopicController(w http.ResponseWriter, r *http.Request) {
 
 	templates.New("header").Parse(views.HeadTemplateHtml)
 	templates.New("navbar").Parse(views.NavbarTemplateHtml)
-	templates.Parse(views.TopicTemplate)
+	//templates.Parse(views.TopicTemplate)
 
 	if r.Method == "POST" {
 

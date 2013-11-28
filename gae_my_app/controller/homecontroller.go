@@ -42,11 +42,22 @@ func Home(w http.ResponseWriter, r *http.Request) {
 	models.SaveCategroy(w, r)
 
 	topnew := models.GetAllTopic(w, r)
-	category := models.GetAllCategory(w, r)
 
-	err := templates.ExecuteTemplate(w, "home", category)
-	err = templates.ExecuteTemplate(w, "home", topnew)
+	err := templates.ExecuteTemplate(w, "home", topnew)
 	if err != nil {
 		log.Fatal(err)
 	}
+}
+
+func CategorySideController(w http.ResponseWriter, r *http.Request) {
+	templates := template.Must(template.New("categorySide").Parse(views.CategorySidePage))
+	templates.New("header").Parse(views.HeadTemplateHtml)
+
+	category := models.GetAllCategory(w, r)
+
+	err := templates.Execute(w, category)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 }

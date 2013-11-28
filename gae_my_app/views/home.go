@@ -25,15 +25,26 @@ const HomePage = `
                 {{end}}
             </div>
             <div class="col-md-3">
-                <h3>文章分类</h3>
-                    <ul>
-                        {{range .}}
-                        <li>{{.Category.Title}}</li>
-                        {{end}}
-                    </ul>
+                <iframe src="categorySide"></iframe>
             </div>
         </div>
         <script type="text/javascript" src="http://cdn.staticfile.org/jquery/2.0.3/jquery.min.js"></script>
+        <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
+    </body>
+</html>
+`
+
+const CategorySidePage = `
+{{template "header" .}}
+        <title>Bug has no bug!</title>
+    </head>
+<h3>文章分类</h3>
+<ul>
+    {{range .}}
+    <li>{{.Category.Title}}</li>
+    {{end}}
+</ul>
+<script type="text/javascript" src="http://cdn.staticfile.org/jquery/2.0.3/jquery.min.js"></script>
         <script type="text/javascript" src="/static/js/bootstrap.min.js"></script>
     </body>
 </html>
