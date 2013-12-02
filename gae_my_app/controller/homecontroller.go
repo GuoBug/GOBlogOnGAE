@@ -39,7 +39,7 @@ func Home(w http.ResponseWriter, r *http.Request) {
 
 	models.SaveTopic(w, r, &topics[1])
 
-	models.SaveCategroy(w, r)
+	//models.SaveCategroy(w, r)
 
 	topnew, _ := models.GetAllTopic(w, r)
 
@@ -53,7 +53,7 @@ func CategorySideController(w http.ResponseWriter, r *http.Request) {
 	templates := template.Must(template.New("categorySide").Parse(views.CategorySidePage))
 	templates.New("header").Parse(views.HeadTemplateHtml)
 
-	category := models.GetAllCategory(w, r)
+	category, _ := models.GetAllCategory(w, r)
 
 	err := templates.Execute(w, category)
 	if err != nil {

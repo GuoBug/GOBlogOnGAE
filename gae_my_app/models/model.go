@@ -53,16 +53,13 @@ func SaveTopic(w http.ResponseWriter, r *http.Request, topic *Topic) {
 	}
 }
 
-func SaveCategroy(w http.ResponseWriter, r *http.Request) {
+func SaveCategroy(w http.ResponseWriter, r *http.Request, category *Category) {
 
 	c := appengine.NewContext(r)
 
-	category := Category{
-		Id:    1,
-		Title: "test",
-	}
+	_, category.Id = GetAllCategory(w, r)
 
-	k := datastore.NewKey(c, "Category", "", category.Id, nil)
+	k := datastore.NewKey(c, "Category", category.Title, 0, nil)
 
 	_, err := datastore.Put(c, k, &category)
 
@@ -112,16 +109,26 @@ func GetAllTopic(w http.ResponseWriter, r *http.Request) ([]template.FuncMap, in
 	return data, i
 }
 
-func GetAllCategory(w http.ResponseWriter, r *http.Request) []template.FuncMap {
+func GetAllCategory(w http.ResponseWriter, r *http.Request) ([]template.FuncMap, int64) {
 	var err error
 	var i int64
-	var category Category
+	var category []Category
+
+	q := datastore.NewQuery("Category")
 
 	c := appengine.NewContext(r)
 
 	data := []template.FuncMap{}
 
-	for i = 1; i < 100; i++ {
+	max, _ := q.GetAll(c, &category)
+	min, _ := q.Count(c)
+
+	log.Println(max)
+	log.Println(category)
+
+	log.Printf("look here ! count [%d] %v", min, q)
+
+	for i = 1; i < 60; i++ {
 
 		k := datastore.NewKey(c, "Category", "", i, nil)
 
@@ -137,7 +144,7 @@ func GetAllCategory(w http.ResponseWriter, r *http.Request) []template.FuncMap {
 		data = append(data, template.FuncMap{"Category": category})
 	}
 
-	return data
+	return data, i
 
 }
 

@@ -19,6 +19,7 @@ func TopicController(w http.ResponseWriter, r *http.Request) {
 	templates.New("header").Parse(views.HeadTemplateHtml)
 	templates.New("navbar").Parse(views.NavbarTemplateHtml)
 
+	//这样可以取得最大的文章号码
 	_, i = models.GetAllTopic(w, r)
 
 	log.Printf("Get Topic Count [%d]", i)
@@ -47,9 +48,14 @@ func TopicController(w http.ResponseWriter, r *http.Request) {
 			ReplyCount: 0,
 		}
 
+		category := models.Category{
+			Title: r.Form["category"][0],
+		}
+
 		log.Println(topic)
 
 		models.SaveTopic(w, r, &topic)
+		models.SaveCategroy(w, r, &category)
 	}
 
 	topnew, _ := models.GetAllTopic(w, r)
