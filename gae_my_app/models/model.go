@@ -61,7 +61,7 @@ func SaveCategroy(w http.ResponseWriter, r *http.Request, category *Category) {
 
 	log.Printf("save category %v ***** %v", category, k)
 
-	_, err := datastore.Put(c, k, &category)
+	_, err := datastore.Put(c, k, category)
 
 	if err != nil {
 		log.Fatal(err)
