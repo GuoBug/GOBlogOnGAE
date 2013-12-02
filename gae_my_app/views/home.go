@@ -17,6 +17,7 @@ const HomePage = `
                 {{range . }}
                 <div class="page-header">
                     <h1>{{.Topic.Title}}</h1>
+                    <h5>文章类型:{{.Topic.Category}}</h3>
                     <h6 class="text-muted">文章发表于 {{.Topic.Created}}</h6>
                     <p>
                     	{{.Topic.Content}}
@@ -25,7 +26,7 @@ const HomePage = `
                 {{end}}
             </div>
             <div class="col-md-3">
-                <iframe src="categorySide"></iframe>
+                <iframe src="categorySide"frameborder="0">浏览器不支持</iframe>
             </div>
         </div>
         <script type="text/javascript" src="http://cdn.staticfile.org/jquery/2.0.3/jquery.min.js"></script>

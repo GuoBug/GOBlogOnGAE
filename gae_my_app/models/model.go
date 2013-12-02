@@ -91,7 +91,7 @@ func GetTopic(w http.ResponseWriter, r *http.Request, i int64) (Topic, error) {
 	return topic, err
 }
 
-func GetAllTopic(w http.ResponseWriter, r *http.Request) []template.FuncMap {
+func GetAllTopic(w http.ResponseWriter, r *http.Request) ([]template.FuncMap, int64) {
 	var err error
 	var i int64
 	var topic Topic
@@ -109,7 +109,7 @@ func GetAllTopic(w http.ResponseWriter, r *http.Request) []template.FuncMap {
 		data = append(data, template.FuncMap{"Topic": topic})
 	}
 
-	return data
+	return data, i
 }
 
 func GetAllCategory(w http.ResponseWriter, r *http.Request) []template.FuncMap {
@@ -131,6 +131,9 @@ func GetAllCategory(w http.ResponseWriter, r *http.Request) []template.FuncMap {
 		if err != nil {
 			break
 		}
+
+		log.Println(category)
+
 		data = append(data, template.FuncMap{"Category": category})
 	}
 

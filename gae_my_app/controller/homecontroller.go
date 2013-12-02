@@ -41,7 +41,7 @@ func Home(w http.ResponseWriter, r *http.Request) {
 
 	models.SaveCategroy(w, r)
 
-	topnew := models.GetAllTopic(w, r)
+	topnew, _ := models.GetAllTopic(w, r)
 
 	err := templates.ExecuteTemplate(w, "home", topnew)
 	if err != nil {

@@ -12,10 +12,17 @@ import (
 
 func TopicController(w http.ResponseWriter, r *http.Request) {
 
+	var i int64
+
 	templates := template.Must(template.New("topicPage").Parse(views.TopicHTML))
 
 	templates.New("header").Parse(views.HeadTemplateHtml)
 	templates.New("navbar").Parse(views.NavbarTemplateHtml)
+
+	_, i = models.GetAllTopic(w, r)
+
+	log.Printf("Get Topic Count [%d]", i)
+
 	//templates.Parse(views.TopicTemplate)
 
 	if r.Method == "POST" {
@@ -27,9 +34,10 @@ func TopicController(w http.ResponseWriter, r *http.Request) {
 		log.Println(r.Form["title"])
 
 		topic := models.Topic{
-			Id:         3,
+			Id:         i,
 			Uid:        0,
 			Title:      r.Form["title"][0],
+			Category:   r.Form["category"][0],
 			Content:    r.Form["content"][0],
 			Attachment: "",
 			Created:    time.Now(),
@@ -44,7 +52,7 @@ func TopicController(w http.ResponseWriter, r *http.Request) {
 		models.SaveTopic(w, r, &topic)
 	}
 
-	topnew := models.GetAllTopic(w, r)
+	topnew, _ := models.GetAllTopic(w, r)
 
 	log.Println("in Topic Controller")
 
