@@ -57,9 +57,9 @@ func SaveCategroy(w http.ResponseWriter, r *http.Request, category *Category) {
 
 	c := appengine.NewContext(r)
 
-	_, category.Id = GetAllCategory(w, r)
-
 	k := datastore.NewKey(c, "Category", category.Title, 0, nil)
+
+	log.Printf("save category %v ***** %v", category, k)
 
 	_, err := datastore.Put(c, k, &category)
 
@@ -88,6 +88,20 @@ func GetTopic(w http.ResponseWriter, r *http.Request, i int64) (Topic, error) {
 	return topic, err
 }
 
+func GetCategory(w http.ResponseWriter, r *http.Request, title string) (Category, error) {
+
+	var category Category
+
+	c := appengine.NewContext(r)
+
+	k := datastore.NewKey(c, "Category", title, 0, nil)
+
+	err := datastore.Get(c, k, &category)
+
+	log.Println(category, k)
+
+	return category, err
+}
 func GetAllTopic(w http.ResponseWriter, r *http.Request) ([]template.FuncMap, int64) {
 	var err error
 	var i int64
@@ -110,7 +124,6 @@ func GetAllTopic(w http.ResponseWriter, r *http.Request) ([]template.FuncMap, in
 }
 
 func GetAllCategory(w http.ResponseWriter, r *http.Request) ([]template.FuncMap, int64) {
-	var err error
 	var i int64
 	var category []Category
 
@@ -120,73 +133,25 @@ func GetAllCategory(w http.ResponseWriter, r *http.Request) ([]template.FuncMap,
 
 	data := []template.FuncMap{}
 
-	max, _ := q.GetAll(c, &category)
-	min, _ := q.Count(c)
+	_, err := q.GetAll(c, &category)
+	if err != nil {
+		log.Fatal(err)
+		return nil, 0
+	}
 
-	log.Println(max)
-	log.Println(category)
+	min, err := q.Count(c)
+	if err != nil {
+		log.Fatal(err)
+		return nil, 0
+	}
 
 	log.Printf("look here ! count [%d] %v", min, q)
 
-	for i = 1; i < 60; i++ {
-
-		k := datastore.NewKey(c, "Category", "", i, nil)
-
-		err = datastore.Get(c, k, &category)
-
-		log.Println(err, category)
-		if err != nil {
-			break
-		}
-
-		log.Println(category)
-
-		data = append(data, template.FuncMap{"Category": category})
+	for i = 0; i < int64(min); i++ {
+		log.Println(category[i])
+		data = append(data, template.FuncMap{"Category": category[i]})
 	}
 
 	return data, i
 
 }
-
-/* 存数据库的原型函数
-func SaveTopic(w http.ResponseWriter, r *http.Request, topic *Topic) {
-	c := appengine.NewContext(r)
-
-	log.Println(topic.TopicNum)
-
-	k := datastore.NewKey(c, "Topic", "stringID", topic.TopicNum, nil)
-
-	log.Println(k)
-
-	_, err := datastore.Put(c, k, topic)
-
-	if err != nil {
-		log.Fatal(err)
-		return
-	}
-}
-*/
-
-/* 取数据原型函数 *
-func GetTopic(w http.ResponseWriter, r *http.Request, i int64) (Topic, error) {
-
-	var topic Topic
-
-	c := appengine.NewContext(r)
-
-	log.Printf("I =[%v]", i)
-
-	k := datastore.NewKey(c, "Topic", "stringID", i, nil)
-
-	log.Println(k)
-
-	err := datastore.Get(c, k, &topic)
-
-	if err != nil {
-		log.Fatal(err)
-		return topic, err
-	}
-
-	return topic, err
-}
-*/
