@@ -43,7 +43,7 @@ func Home(w http.ResponseWriter, r *http.Request) {
 
 	topnew, _ := models.GetAllTopic(w, r)
 
-	category, _ := models.GetCategory(w, r, "test")
+	category, _ := models.GetCategory(w, r, "事实上")
 
 	log.Printf("***********************  %v", category)
 

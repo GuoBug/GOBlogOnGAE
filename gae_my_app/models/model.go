@@ -48,20 +48,28 @@ func SaveTopic(w http.ResponseWriter, r *http.Request, topic *Topic) {
 	_, err := datastore.Put(c, k, topic)
 
 	if err != nil {
-		log.Fatal(err)
-		return
+		log.Println(k)
 	}
+
+	return
 }
 
 func SaveCategroy(w http.ResponseWriter, r *http.Request, category *Category) {
 
 	c := appengine.NewContext(r)
 
+	/*存在 不再插 */
+	_, err := GetCategory(w, r, category.Title)
+	if err != nil {
+		log.Printf("存在了，不再插入 %v", err)
+		return
+	}
+
 	k := datastore.NewKey(c, "Category", category.Title, 0, nil)
 
 	log.Printf("save category %v ***** %v", category, k)
 
-	_, err := datastore.Put(c, k, category)
+	_, err = datastore.Put(c, k, category)
 
 	if err != nil {
 		log.Fatal(err)
@@ -97,6 +105,9 @@ func GetCategory(w http.ResponseWriter, r *http.Request, title string) (Category
 	k := datastore.NewKey(c, "Category", title, 0, nil)
 
 	err := datastore.Get(c, k, &category)
+	if err != nil {
+		log.Fatal(err)
+	}
 
 	log.Println(category, k)
 
