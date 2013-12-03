@@ -26,7 +26,8 @@ const HomePage = `
                 {{end}}
             </div>
             <div class="col-md-3">
-                <iframe src="categorySide"frameborder="0">浏览器不支持</iframe>
+                <h3>文章分类</h3>
+                <iframe src="/categorySide" name="view_frame" frameborder=0>
             </div>
         </div>
         <script type="text/javascript" src="http://cdn.staticfile.org/jquery/2.0.3/jquery.min.js"></script>
@@ -39,7 +40,6 @@ const CategorySidePage = `
 {{template "header" .}}
         <title>Bug has no bug!</title>
     </head>
-<h3>文章分类</h3>
 <ul>
     {{range .}}
     <li>{{.Category.Title}}</li>
