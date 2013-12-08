@@ -35,7 +35,7 @@ const TopicHTML = `
                         <th>{{.Topic.ReplyCount}}</th>
                         <th>
                             <a href="/topic/modify?tid={{.Topic.Id}}">修改</a>
-                            <a href="/topic/del?id={{.Topic.Id}}">删除</a>
+                            <a href="/topic/del?{{.Topic.Id}}">删除</a>
                         </th>
                     </tr>
                     {{end}}

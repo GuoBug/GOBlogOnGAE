@@ -166,3 +166,18 @@ func GetAllCategory(w http.ResponseWriter, r *http.Request) ([]template.FuncMap,
 	return data, i
 
 }
+
+func DeleteTopic(w http.ResponseWriter, r *http.Request, i int64) error {
+	c := appengine.NewContext(r)
+
+	k := datastore.NewKey(c, "Topic", "", i, nil)
+	log.Println(k)
+
+	err := datastore.Delete(c, k)
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
+
+	return err
+}

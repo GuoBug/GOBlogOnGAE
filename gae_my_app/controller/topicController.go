@@ -86,5 +86,13 @@ func TopicAddController(w http.ResponseWriter, r *http.Request) {
 
 }
 
+func TopicDelController(w http.ResponseWriter, r *http.Request) {
+	log.Printf("OOOOOOOOOOOOOOOOOOOO\n")
+	log.Println(r.URL.RawQuery)
+	models.DeleteTopic(w, r, 1)
+	http.Redirect(w, r, "/topic", 304)
+	return
+}
+
 func Get(w http.ResponseWriter, r *http.Request) {
 }
