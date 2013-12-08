@@ -7,6 +7,7 @@ import (
 	"html/template"
 	"log"
 	"net/http"
+	"strconv"
 	"time"
 )
 
@@ -88,9 +89,15 @@ func TopicAddController(w http.ResponseWriter, r *http.Request) {
 
 func TopicDelController(w http.ResponseWriter, r *http.Request) {
 	log.Printf("OOOOOOOOOOOOOOOOOOOO\n")
-	log.Println(r.URL.RawQuery)
-	models.DeleteTopic(w, r, 1)
-	http.Redirect(w, r, "/topic", 304)
+
+	id, err := strconv.ParseInt(r.URL.RawQuery, 10, 64)
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+	log.Printf("Get Delete Id is [%d]", id)
+	models.DeleteTopic(w, r, id)
+	http.Redirect(w, r, "/topic/", 303)
 	return
 }
 
