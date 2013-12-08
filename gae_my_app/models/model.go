@@ -116,19 +116,29 @@ func GetCategory(w http.ResponseWriter, r *http.Request, title string) (Category
 func GetAllTopic(w http.ResponseWriter, r *http.Request) ([]template.FuncMap, int64) {
 	var err error
 	var i int64
-	var topic Topic
+	var topic []Topic
+
+	q := datastore.NewQuery("Topic")
+
+	c := appengine.NewContext(r)
 
 	data := []template.FuncMap{}
 
-	log.Println("in all")
-	for i = 1; i < 100; i++ {
-		topic, err = GetTopic(w, r, i)
+	_, err = q.GetAll(c, &topic)
+	if err != nil {
+		log.Fatal(err)
+		return nil, 0
+	}
 
-		log.Println(err, topic)
-		if err != nil {
-			break
-		}
-		data = append(data, template.FuncMap{"Topic": topic})
+	min, err := q.Count(c)
+	if err != nil {
+		log.Fatal(err)
+		return nil, 0
+	}
+
+	for i = 0; i < int64(min); i++ {
+		log.Println(topic[i])
+		data = append(data, template.FuncMap{"Topic": topic[i]})
 	}
 
 	return data, i
