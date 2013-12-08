@@ -97,7 +97,6 @@ func TopicDelController(w http.ResponseWriter, r *http.Request) {
 	}
 	log.Printf("Get Delete Id is [%d]", id)
 	models.DeleteTopic(w, r, id)
-	http.Redirect(w, r, "/topic/", 303)
 	return
 }
 
