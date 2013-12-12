@@ -144,9 +144,9 @@ func GetAllTopic(w http.ResponseWriter, r *http.Request) ([]template.FuncMap, in
 		data = append(data, template.FuncMap{"Topic": topic[i]})
 	}
 
-	log.Printf("If here number is Need [%v]", i)
+	log.Printf("If here number is Need [%v]", topic[i-1].Id)
 
-	return data, i
+	return data, topic[i-1].Id
 }
 
 func GetAllCategory(w http.ResponseWriter, r *http.Request) ([]template.FuncMap, int64) {
