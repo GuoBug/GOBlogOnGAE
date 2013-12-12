@@ -66,11 +66,11 @@ func SaveCategroy(w http.ResponseWriter, r *http.Request, category *Category) {
 
 	/*存在 不再插 */
 	log.Printf("title [%s]", category.Title)
-	_, err := GetCategory(w, r, category.Title)
+	tmpCategory, err := GetCategory(w, r, category.Title)
 
 	if err == nil {
 		log.Printf("存在了，不再插入 %v", err)
-		category.TopicCount++
+		category.TopicCount = tmpCategory.TopicCount + 1
 	} else {
 		category.TopicCount = 1
 	}
