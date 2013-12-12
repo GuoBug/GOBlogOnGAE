@@ -36,7 +36,7 @@ func TopicController(w http.ResponseWriter, r *http.Request) {
 		log.Println(r.Form["title"])
 
 		topic := models.Topic{
-			Id:         i,
+			Id:         i + 1,
 			Uid:        0,
 			Title:      r.Form["title"][0],
 			Category:   r.Form["category"][0],

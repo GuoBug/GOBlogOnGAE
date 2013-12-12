@@ -42,7 +42,7 @@ const CategorySidePage = `
     </head>
 <ul>
     {{range .}}
-    <li>{{.Category.Title}}</li>
+    <li>{{.Category.Title}}:共{{.Category.TopicCount}}</li> 
     {{end}}
 </ul>
 <script type="text/javascript" src="http://cdn.staticfile.org/jquery/2.0.3/jquery.min.js"></script>

@@ -59,6 +59,10 @@ func SaveTopic(w http.ResponseWriter, r *http.Request, topic *Topic) {
 func SaveCategroy(w http.ResponseWriter, r *http.Request, category *Category) {
 
 	c := appengine.NewContext(r)
+	/* 先设置 key */
+	k := datastore.NewKey(c, "Category", category.Title, 0, nil)
+
+	log.Printf("save category %v ***** %v", category, k)
 
 	/*存在 不再插 */
 	log.Printf("title [%s]", category.Title)
@@ -66,11 +70,10 @@ func SaveCategroy(w http.ResponseWriter, r *http.Request, category *Category) {
 
 	if err == nil {
 		log.Printf("存在了，不再插入 %v", err)
+		category.TopicCount++
+	} else {
+		category.TopicCount = 1
 	}
-
-	k := datastore.NewKey(c, "Category", category.Title, 0, nil)
-
-	log.Printf("save category %v ***** %v", category, k)
 
 	_, err = datastore.Put(c, k, category)
 
@@ -118,7 +121,7 @@ func GetAllTopic(w http.ResponseWriter, r *http.Request) ([]template.FuncMap, in
 	var i int64
 	var topic []Topic
 
-	q := datastore.NewQuery("Topic")
+	q := datastore.NewQuery("Topic").Order("Id")
 
 	c := appengine.NewContext(r)
 
@@ -140,6 +143,8 @@ func GetAllTopic(w http.ResponseWriter, r *http.Request) ([]template.FuncMap, in
 		log.Println(topic[i])
 		data = append(data, template.FuncMap{"Topic": topic[i]})
 	}
+
+	log.Printf("If here number is Need [%v]", i)
 
 	return data, i
 }
