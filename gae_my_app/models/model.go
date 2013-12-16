@@ -183,6 +183,7 @@ func GetAllCategory(w http.ResponseWriter, r *http.Request) ([]template.FuncMap,
 }
 
 func DeleteTopic(w http.ResponseWriter, r *http.Request, i int64) error {
+	// 删除同时减少计数器！不要忘了！
 
 	c := appengine.NewContext(r)
 
