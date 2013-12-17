@@ -200,3 +200,35 @@ func DeleteTopic(w http.ResponseWriter, r *http.Request, i int64) error {
 
 	return err
 }
+
+func DeleteCategory(w http.ResponseWriter, r *http.Request, title string) error {
+	c := appengine.NewContext(r)
+
+	categort, err := GetCategory(w, r, title)
+	if err != nil {
+		log.Fatalf("类型不存在[%v]", title)
+		return err
+	}
+
+	if categort.TopicCount > 1 {
+
+		categort.TopicCount--
+		log.Fatalf("更新 category [%v]", categort)
+		SaveCategroy(w, r, &categort)
+
+	} else if categort.TopicCount == 1 {
+
+		k := datastore.NewKey(c, "Category", title, 0, nil)
+		log.Println(k)
+		err = datastore.Delete(c, k)
+		if err != nil {
+			log.Fatal(err)
+			return err
+		}
+	} else {
+		log.Fatalf("出错了！[%v]", categort)
+		return err
+	}
+
+	return err
+}
