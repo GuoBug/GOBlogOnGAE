@@ -185,12 +185,22 @@ func GetAllCategory(w http.ResponseWriter, r *http.Request) ([]template.FuncMap,
 func DeleteTopic(w http.ResponseWriter, r *http.Request, i int64) error {
 	// 删除同时减少计数器！不要忘了！
 
+	var topic Topic
+
 	c := appengine.NewContext(r)
 
 	k := datastore.NewKey(c, "Topic", "", i, nil)
 	log.Println(k)
 
-	err := datastore.Delete(c, k)
+	err := datastore.Get(c, k, &topic)
+
+	err = DeleteCategory(w, r, topic.Category)
+	if err != nil {
+		log.Fatal(err)
+		return err
+	}
+
+	err = datastore.Delete(c, k)
 	if err != nil {
 		log.Fatal(err)
 		return err
@@ -204,19 +214,19 @@ func DeleteTopic(w http.ResponseWriter, r *http.Request, i int64) error {
 func DeleteCategory(w http.ResponseWriter, r *http.Request, title string) error {
 	c := appengine.NewContext(r)
 
-	categort, err := GetCategory(w, r, title)
+	category, err := GetCategory(w, r, title)
 	if err != nil {
 		log.Fatalf("类型不存在[%v]", title)
 		return err
 	}
 
-	if categort.TopicCount > 1 {
+	if category.TopicCount > 1 {
 
-		categort.TopicCount--
-		log.Fatalf("更新 category [%v]", categort)
-		SaveCategroy(w, r, &categort)
+		category.TopicCount -= 2
+		log.Fatalf("更新 category [%v]", category)
+		SaveCategroy(w, r, &category)
 
-	} else if categort.TopicCount == 1 {
+	} else if category.TopicCount == 1 {
 
 		k := datastore.NewKey(c, "Category", title, 0, nil)
 		log.Println(k)
@@ -226,7 +236,7 @@ func DeleteCategory(w http.ResponseWriter, r *http.Request, title string) error 
 			return err
 		}
 	} else {
-		log.Fatalf("出错了！[%v]", categort)
+		log.Fatalf("出错了！[%v]", category)
 		return err
 	}
 
