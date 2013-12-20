@@ -83,6 +83,46 @@ func SaveCategroy(w http.ResponseWriter, r *http.Request, category *Category) {
 	}
 }
 
+func UpdateCategroy(w http.ResponseWriter, r *http.Request, category *Category, flag int) {
+
+	/* flag == 0  累加 */
+	/* flag == 1  删除 */
+	log.Printf("Come to update category")
+
+	c := appengine.NewContext(r)
+	/* 先设置 key */
+	k := datastore.NewKey(c, "Category", category.Title, 0, nil)
+
+	log.Printf("save category %v ***** %v", category, k)
+
+	/*存在 不再插 */
+	log.Printf("title [%s]", category.Title)
+	_, err := GetCategory(w, r, category.Title)
+
+	if err == nil {
+		log.Printf("存在了，不再插入 %v", err)
+		if flag == 0 {
+			category.TopicCount++
+		} else if flag == 1 {
+			category.TopicCount--
+		}
+	} else {
+		if flag == 0 {
+			SaveCategroy(w, r, category)
+		} else if flag == 1 {
+			log.Fatal("Error update But have no data !")
+			return
+		}
+	}
+
+	_, err = datastore.Put(c, k, category)
+
+	if err != nil {
+		log.Fatal(err)
+		return
+	}
+}
+
 func GetTopic(w http.ResponseWriter, r *http.Request, i int64) (Topic, error) {
 
 	var topic Topic
@@ -222,9 +262,8 @@ func DeleteCategory(w http.ResponseWriter, r *http.Request, title string) error 
 
 	if category.TopicCount > 1 {
 
-		category.TopicCount -= 2
-		log.Fatalf("更新 category [%v]", category)
-		SaveCategroy(w, r, &category)
+		log.Println("更新 category [%v]", category)
+		UpdateCategroy(w, r, &category, 1)
 
 	} else if category.TopicCount == 1 {
 
@@ -239,6 +278,8 @@ func DeleteCategory(w http.ResponseWriter, r *http.Request, title string) error 
 		log.Fatalf("出错了！[%v]", category)
 		return err
 	}
+
+	log.Printf("结束 delete category")
 
 	return err
 }
