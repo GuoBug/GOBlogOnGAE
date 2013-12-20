@@ -53,6 +53,8 @@ func SaveTopic(w http.ResponseWriter, r *http.Request, topic *Topic) {
 		log.Println(k)
 	}
 
+	http.Redirect(w, r, "/topic", 303)
+
 	return
 }
 
@@ -156,6 +158,7 @@ func GetCategory(w http.ResponseWriter, r *http.Request, title string) (Category
 
 	return category, err
 }
+
 func GetAllTopic(w http.ResponseWriter, r *http.Request) ([]template.FuncMap, int64) {
 	var err error
 	var i int64
@@ -246,7 +249,7 @@ func DeleteTopic(w http.ResponseWriter, r *http.Request, i int64) error {
 		return err
 	}
 
-	http.Redirect(w, r, "/topic", 303)
+	http.Redirect(w, r, "/", 303)
 
 	return err
 }
